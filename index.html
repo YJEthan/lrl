@@ -1,37 +1,78 @@
-## Welcome to GitHub Pages
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>选取词语</title>
+    <script
+      type="text/javascript"
+      src="https://code.jquery.com/jquery-3.0.0.min.js"
+    ></script>
+    <style type="text/css">
+      #divframe {
+        border: 1px solid #999;
+        width: 70%;
+        margin: 0 auto;
+      }
 
-You can use the [editor on GitHub](https://github.com/YJEthan/lrl/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+      .loadTitle {
+        background: #ccc;
+        height: 30px;
+      }
+    </style>
+    <script type="text/javascript">
+      $(function () {
+        $("#btn").click(function () {
+          $.getJSON("dic.json", function (data) {
+            var $jsontip = $("#jsonTip");
+            var strHtml = "选取的词语：<br/>"; //存储数据的变量
+            var temp = new Set();
+            $jsontip.empty(); //清空内容
+            // console.log(data[1]);
+            var cnt = Math.min(Math.floor(data.length / 2), 20);
+            // console.log(cnt);
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/YJEthan/lrl/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+            while (temp.size < cnt) {
+              temp.add(Math.floor(Math.random() * 1000) % data.length);
+            }
+            // console.log(temp);
+            strHtml +=
+              '<table cellpadding="10px" cellspacing="0px" border="1" width="100%" align="center">';
+            var pos = 1;
+            for (let i of temp) {
+              console.log(i);
+              console.log(data[i]["1"]);
+              strHtml +=
+                (pos % 2 === 1 ? "<tr  >" : "") +
+                '<td width="25%"  align="center" bgcolor="#d0d0ff">' +
+                "词语" +
+                pos +
+                ":" +
+                "</td>" +
+                '<td width="25%"  align="center"  bgcolor="#ccffcc">' +
+                data[i]["1"] +
+                "</td>" +
+                (pos % 2 === 0 ? "</tr  >" : "");
+              pos++;
+            }
+            console.log(strHtml);
+            strHtml += "</table>";
+            $jsontip.html(strHtml); //显示处理后的数据
+          });
+        });
+      });
+    </script>
+  </head>
+  <body bgcolor="#d0d0d0">
+    <div id="divframe" width="70%">
+      <div class="loadTitle" align="center">
+        <input
+          type="button"
+          value="选取词语"
+          id="btn"
+          style="font-size: 20px;"
+        />
+      </div>
+      <div id="jsonTip" style="font-size: 40px;"></div>
+    </div>
+  </body>
+</html>

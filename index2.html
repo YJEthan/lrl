@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>选取式子</title>
+    <script
+      type="text/javascript"
+      src="https://code.jquery.com/jquery-3.0.0.min.js"
+    ></script>
+    <style type="text/css">
+      #divframe {
+        border: 1px solid #999;
+        width: 70%;
+        margin: 0 auto;
+      }
+
+      .loadTitle {
+        background: #ccc;
+        height: 30px;
+      }
+    </style>
+    <script type="text/javascript">
+      $(function () {
+        $("#btn").click(function () {
+          $.getJSON("dic.json", function (data) {
+            var $jsontip = $("#jsonTip");
+            var strHtml = "选取的式子：<br/>"; //存储数据的变量
+            var temp = new Set();
+            $jsontip.empty(); //清空内容
+            // console.log(data[1]);
+            // var cnt = Math.min(Math.floor(data.length / 2), 20);
+            var cnt = 10;
+            // console.log(cnt);
+
+            while (temp.size < cnt) {
+              temp.add(
+                ((Math.floor(Math.random() * 10) % 9) + 1).toString() +
+                  "X" +
+                  ((Math.floor(Math.random() * 10) % 9) + 1).toString() +
+                  "=?"
+              );
+            }
+            console.log(temp);
+
+            for (let t of temp) {
+              console.log(t, t[0]);
+            }
+            strHtml +=
+              '<table cellpadding="10px" cellspacing="0px" border="1" width="100%" align="center">';
+            var pos = 1;
+            for (let t of temp) {
+              strHtml +=
+                (true ? "<tr  >" : "") +
+                '<td width="25%"  align="center" bgcolor="#d0d0ff">' +
+                "式子" +
+                pos +
+                ":" +
+                "</td>" +
+                '<td width="25%"  align="center"  bgcolor="#ccffcc">' +
+                t +
+                "</td>" +
+                (true ? "</tr  >" : "");
+              pos++;
+            }
+            console.log(strHtml);
+            strHtml += "</table>";
+            $jsontip.html(strHtml); //显示处理后的数据
+          });
+        });
+      });
+    </script>
+  </head>
+  <body bgcolor="#d0d0d0">
+    <div id="divframe" width="70%">
+      <div class="loadTitle" align="center">
+        <input
+          type="button"
+          value="选取式子"
+          id="btn"
+          style="font-size: 20px;"
+        />
+      </div>
+      <div id="jsonTip" style="font-size: 40px;"></div>
+    </div>
+  </body>
+</html>
